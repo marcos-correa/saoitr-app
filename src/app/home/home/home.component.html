@@ -1,0 +1,17 @@
+<div class="container">
+
+
+  <button (click)="getAllusers()">
+    <i class="fas fa-arrows-rotate"></i>
+  </button>
+  
+  <div *ngIf="users" class="users">
+    <div *ngFor="let user of allUsers">
+      <div class="user d-flex">
+        <div class="user_name">id: {{user.id}}, name: {{ user.name }} </div>
+        <div class="user_email">, email:{{ user.email }} </div>
+      </div>
+    </div>
+  </div>
+</div>
+

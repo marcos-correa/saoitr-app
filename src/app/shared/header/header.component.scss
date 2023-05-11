@@ -1,0 +1,7 @@
+// import variables from assets/scss/variables
+@import '../../../assets/scss/variables';
+
+.header{
+  background-color: $primary;
+  color: white
+}

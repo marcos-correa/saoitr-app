@@ -1,0 +1,10 @@
+<div class="header w-100 d-flex align-items-center justify-content-between">
+  <div class="header-title ms-5 p-2">
+    {{title}}</div>
+  <div class="d-flex me-5">
+    <button (click)="toggleSetApi()">
+      <i class="fas fa-gear"></i>
+    </button>
+    <set-api *ngIf="showSetApi" (settedAPI)="settedApi()"></set-api>
+  </div>
+</div>

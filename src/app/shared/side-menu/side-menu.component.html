@@ -1,0 +1,13 @@
+<div class="side-menu d-flex flex-column h-100">
+  <div class="menu-items h-100">
+    <div class="menu-item" *ngFor="let item of menuItems">
+      <div class="d-flex flex-column p-2">
+
+        <!-- {{item.name}} -->
+        <button [routerLink]="item.path" class="btn btn-primary">
+          <i class="fas {{item.icon}}"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
