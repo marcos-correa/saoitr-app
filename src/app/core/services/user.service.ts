@@ -87,7 +87,6 @@ export class UserService {
 
   private _encryptPassword(user: any) {
     const password = Md5.hashStr(user.password);
-    console.log('PASS', password);
     return {
       ...user,
       password,
