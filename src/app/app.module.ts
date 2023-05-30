@@ -8,11 +8,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './shared/header/header.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptorService } from './core/guard/token-interceptor.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Md5 } from 'ts-md5';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
@@ -26,6 +29,7 @@ import { TokenInterceptorService } from './core/guard/token-interceptor.service'
       useClass: TokenInterceptorService,
       multi: true,
     },
+    Md5,
   ],
   bootstrap: [AppComponent],
 })

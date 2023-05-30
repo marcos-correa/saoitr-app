@@ -1,0 +1,28 @@
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Entrega 1</h1>
+      </div>
+    </div>
+    <div *ngIf="!isLogged">
+      Usuário não está logado!
+    </div>
+    <div *ngIf="user && user.name && user.email" class="row">
+
+      <div class="col-12">
+        <h4>O usuário está logado =)</h4>
+        <div class="profile">
+          <div class="profile__name">
+            <span class="profile__name__label">Usuário:</span>
+            <span class="profile__name__value"> {{user.name}}</span>
+          </div>
+          <div class="profile__email">
+            <span class="profile__email__label">Email:</span>
+            <span class="profile__email__value"> {{user.email}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

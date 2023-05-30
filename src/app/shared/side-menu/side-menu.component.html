@@ -1,11 +1,14 @@
+<p-toast></p-toast>
 <div class="side-menu d-flex flex-column h-100">
   <div class="menu-items h-100">
     <div class="menu-item" *ngFor="let item of menuItems">
-      <div class="d-flex flex-column p-2">
+      <div class="d-flex align-items-center p-2">
 
-        <!-- {{item.name}} -->
-        <button [routerLink]="item.path" class="btn btn-primary">
+        <button (click)="router(item.path)" class="btn btn-primary btn-dark d-flex align-items-center">
           <i class="fas {{item.icon}}"></i>
+          <span class="ms-2 me-2" style="color:white; white-space: nowrap;">
+            {{item.name}}
+          </span>
         </button>
       </div>
     </div>

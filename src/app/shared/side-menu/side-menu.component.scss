@@ -1,9 +1,13 @@
 @import '../../../assets/scss/variables';
 
 .menu-items{
-  background-color: $primary;
+  background-color: #0A0A0A;
 }
 
 .side-menu{
   background-color: $primary;
+}
+
+.btn-dark{
+  background-color: transparent;
 }

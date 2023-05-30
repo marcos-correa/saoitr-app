@@ -1,8 +1,10 @@
 
-<header (reset)="reset()"></header>
-<div class="d-flex app-content">
-  <side-menu></side-menu>
-  <div *ngIf="!isLoading" class="container">
-    <router-outlet></router-outlet>
+<!-- <p-toast></p-toast> -->
+<div class="d-flex app-content" >
+  <side-menu style="width: 250px"></side-menu>
+  <div class="d-flex flex-column" style="width: -webkit-fill-available; overflow: hidden">
+
+    <header (reset)="reset()" class=""></header>
+    <router-outlet *ngIf="!isLoading" class="container-fluid"></router-outlet>
   </div>
 </div>

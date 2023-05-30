@@ -20,6 +20,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'profile',
+    loadChildren: () =>
+      import('./account/account.module').then((m) => m.AccountModule),
+  },
+  {
     path: 'create-user',
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),

@@ -9,25 +9,35 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class HomeComponent implements OnInit {
   allUsers: User[] = [];
-  showLogin: boolean = false;
+  isLogged: boolean = false;
+  showOccurences: boolean = false;
 
   constructor(private _userService: UserService) {}
 
   ngOnInit(): void {
-    this.users();
+    this.getUsers();
+    this._userService.isUserLogged$.subscribe((isLogged) => {
+      if (isLogged) {
+        this.isLogged = true;
+      } else {
+        this.isLogged = false;
+      }
+    });
   }
 
-  users() {
-    this.getAllusers();
+  getUsers() {
+    if (this.showOccurences) {
+      this.getAllusers();
+    }
+  }
+
+  toggleShowOccurences() {
+    this.showOccurences = !this.showOccurences;
   }
 
   getAllusers() {
     this._userService.getAllUsers().subscribe((users) => {
       this.allUsers = users;
     });
-  }
-
-  toggleLogin() {
-    this.showLogin = !this.showLogin;
   }
 }
