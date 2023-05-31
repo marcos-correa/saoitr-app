@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { USER_MESSAGES } from '../constants/messages';
 
 import { Md5 } from 'ts-md5';
+import { BASE_URL } from './constants';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,7 +31,7 @@ export class UserService {
   ) {}
 
   getAllUsers(): Observable<any> {
-    return this.httpClient.get(`${this.BASE_URL}/users`);
+    return this.httpClient.get(`${BASE_URL()}/users`);
   }
 
   getUserFromStorage() {
@@ -44,7 +45,7 @@ export class UserService {
   login(user: any): Observable<any> {
     // encrypting password as md5 hash
     const userMd5 = this._encryptPassword(user);
-    return this.httpClient.post(`${this.BASE_URL}/login`, userMd5).pipe(
+    return this.httpClient.post(`${BASE_URL()}/login`, userMd5).pipe(
       tap((res: any) => {
         this._setUser(res);
       })
@@ -53,7 +54,7 @@ export class UserService {
 
   logout() {
     const { id } = this.getUserFromStorage();
-    this.httpClient.post(`${this.BASE_URL}/logout`, { id }).subscribe({
+    this.httpClient.post(`${BASE_URL()}/logout`, { id }).subscribe({
       next: () => {
         this._resetUser();
         this._messageService.add(USER_MESSAGES.LOGOUT_SUCCESS);
@@ -82,7 +83,7 @@ export class UserService {
   createUser(user: any): Observable<any> {
     // encrypting password as md5 hash
     const userMd5 = this._encryptPassword(user);
-    return this.httpClient.post(`${this.BASE_URL}/users`, userMd5);
+    return this.httpClient.post(`${BASE_URL()}/users`, userMd5);
   }
 
   private _encryptPassword(user: any) {
@@ -91,14 +92,5 @@ export class UserService {
       ...user,
       password,
     };
-  }
-
-  testHash() {
-    const password = Md5.hashStr('1234aa56');
-    console.log('PASS:', password);
-  }
-
-  get BASE_URL() {
-    return environment['baseURL'];
   }
 }

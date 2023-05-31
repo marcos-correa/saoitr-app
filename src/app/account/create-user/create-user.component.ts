@@ -46,7 +46,4 @@ export class CreateUserComponent implements OnInit {
       },
     });
   }
-  testHash() {
-    this._userService.testHash();
-  }
 }
