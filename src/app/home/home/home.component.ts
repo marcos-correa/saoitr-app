@@ -10,7 +10,8 @@ import { UserService } from 'src/app/core/services/user.service';
 export class HomeComponent implements OnInit {
   allUsers: User[] = [];
   isLogged: boolean = false;
-  showOccurences: boolean = false;
+  showOccurences: boolean = true;
+  showUsers: boolean = false;
 
   constructor(private _userService: UserService) {}
 
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
   }
 
   getUsers() {
-    if (this.showOccurences) {
+    if (this.showUsers) {
       this.getAllusers();
     }
   }
