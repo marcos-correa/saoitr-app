@@ -28,6 +28,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CreateOccurrenceComponent } from './create-occurrence/create-occurrence.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     SideMenuComponent,
     DialogComponent,
     OccurencesComponent,
+    CreateOccurrenceComponent,
   ],
   imports: [
     CommonModule,

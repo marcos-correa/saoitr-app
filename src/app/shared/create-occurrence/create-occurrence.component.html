@@ -1,0 +1,103 @@
+<div class="field">
+  <label for="local">Local</label>
+  <input
+    type="text"
+    pInputText
+    id="local"
+    [(ngModel)]="occurrence.local"
+    required
+    autofocus
+    (ngModelChange)="onOccurrenceChange()"
+  />
+  <small class="p-error" *ngIf="submitted && !occurrence.local"
+    >Local é obrigatório</small
+  >
+</div>
+<div class="field">
+  <label for="km">KM</label>
+  <p-inputNumber
+    id="km"
+    [useGrouping]="false"
+    [min]="1"
+    [max]="999"
+    [(ngModel)]="occurrence.km"
+    [required]="true"
+    (ngModelChange)="onOccurrenceChange()"
+  ></p-inputNumber>
+</div>
+<div class="field">
+  <label for="inventoryStatus">Tipo</label>
+  <p-dropdown
+    [(ngModel)]="occurrence.occurrence_type"
+    inputId="inventoryStatus"
+    [options]="types"
+    (ngModelChange)="onOccurrenceChange()"
+    placeholder="Select"
+    optionLabel="description"
+    optionValue="occurrence_type"
+  >
+    <ng-template let-type pTemplate="item">
+      <span [class]="'product-badge status-' + type.occurrence_type">{{
+        type.description
+      }}</span>
+    </ng-template>
+  </p-dropdown>
+</div>
+<!-- 
+  <div class="field">
+      <label class="mb-3">Category</label>
+      <div class="formgrid grid">
+          <div class="field-radiobutton col-6">
+              <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="occurrence.category"></p-radioButton>
+              <label for="category1">Accessories</label>
+          </div>
+          <div class="field-radiobutton col-6">
+              <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="occurrence.category"></p-radioButton>
+              <label for="category2">Clothing</label>
+          </div>
+          <div class="field-radiobutton col-6">
+              <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.category"></p-radioButton>
+              <label for="category3">Electronics</label>
+          </div>
+          <div class="field-radiobutton col-6">
+              <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.category"></p-radioButton>
+              <label for="category4">Fitness</label>
+          </div>
+      </div>
+  </div> -->
+
+<div class="formgrid grid">
+  <div class="field col">
+    <label for="data">Data</label>
+    <p-calendar
+      dateFormat="dd/mm/yy"
+      id="data"
+      dataType="string"
+      [(ngModel)]="occurrence.registered_at"
+      (ngModelChange)="onOccurrenceChange()"
+    ></p-calendar>
+  </div>
+  <!-- <div class="field col">
+          <label for="quantity">Quantity</label>
+          <p-inputNumber id="quantity" [(ngModel)]="occurrence.quantity"></p-inputNumber>
+      </div> -->
+</div>
+
+<div class="d-flex mt-4">
+  <button
+    pButton
+    pRipple
+    label="Cancelar"
+    icon="pi pi-times"
+    class="p-button-text"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Salvar"
+    icon="pi pi-check"
+    class="p-button-text"
+    (click)="saveProduct()"
+  ></button>
+</div>
