@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  LOGIN_MENU,
+  LOGOUT_MENU,
+  MENU_ITEMS,
+} from 'src/app/core/services/constants';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -8,60 +13,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent implements OnInit {
-  menuItems = [
-    {
-      name: 'Início',
-      icon: 'fa-home',
-      path: '/home',
-    },
-    {
-      name: 'Criar Usuário',
-      icon: 'fa-user-plus',
-      path: '/create-user',
-    },
-    {
-      name: 'Login',
-      icon: 'fa-sign-in',
-      path: '/login',
-    },
-  ];
-
-  loginMenu = [
-    {
-      name: 'Início',
-      icon: 'fa-home',
-      path: '/home',
-    },
-    {
-      name: 'Criar Usuário',
-      icon: 'fa-user-plus',
-      path: '/create-user',
-    },
-    {
-      name: 'Login',
-      icon: 'fa-sign-in',
-      path: '/login',
-    },
-  ];
-
-  logoutMenu = [
-    {
-      name: 'Home',
-      icon: 'fa-home',
-      path: '/home',
-    },
-    {
-      name: 'Profile',
-      icon: 'fa-user',
-      path: '/profile',
-    },
-    {
-      name: 'Logout',
-      icon: 'fa-sign-out',
-      path: '/logout',
-    },
-  ];
-
+  menuItems = MENU_ITEMS;
   constructor(private _userService: UserService, private _router: Router) {}
 
   ngOnInit(): void {
@@ -75,16 +27,16 @@ export class SideMenuComponent implements OnInit {
   userSub() {
     this._userService.isUserLogged$.subscribe((isLogged) => {
       if (isLogged) {
-        this.menuItems = this.logoutMenu;
+        this.menuItems = LOGOUT_MENU;
       } else {
-        this.menuItems = this.loginMenu;
+        this.menuItems = LOGIN_MENU;
       }
     });
   }
 
   router(path: string) {
     if (path !== '/logout') {
-      this._router.navigate([path]);
+      this._router.navigate([path]).finally();
     } else {
       this.logout();
     }

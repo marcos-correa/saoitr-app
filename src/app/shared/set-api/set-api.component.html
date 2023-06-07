@@ -1,4 +1,45 @@
-<div class="d-flex">
-  <input type="text" [(ngModel)]="baseURL">
-  <button class="btn btn-primary btn-dark"(click)="setAPI()">SALVAR</button>
+<div class="d-flex flex-column">
+  <div class="d-flex mb-2">
+    <button
+      pButton
+      pRipple
+      icon="pi pi-home"
+      class="p-button-primary p-button-outlined"
+      label="Local"
+      (click)="showLocalAPI()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      icon="pi pi-book"
+      class="p-button-primary p-button-outlined ms-3"
+      label="UTFPR"
+      (click)="showUTFPRAPI()"
+    ></button>
+  </div>
+
+  <div class="p-inputgroup" *ngIf="setLocalAPI">
+    <input type="text" pInputText [(ngModel)]="baseURL" />
+
+    <button
+      pButton
+      pRipple
+      class="p-button-primary"
+      icon="pi pi-check"
+      (click)="setAPI()"
+    ></button>
+  </div>
+
+  <div class="p-inputgroup" *ngIf="!setLocalAPI">
+    <span class="p-inputgroup-addon">10.20.8.</span>
+    <input type="text" pInputText [(ngModel)]="baseUTFPR" />
+
+    <button
+      pButton
+      pRipple
+      class="p-button-primary"
+      icon="pi pi-check"
+      (click)="setUTFPRAPI()"
+    ></button>
+  </div>
 </div>

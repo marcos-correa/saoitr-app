@@ -16,6 +16,8 @@ export class CreateUserComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
+  showPassword: boolean = false;
+
   constructor(
     private _userService: UserService,
     private _messageService: MessageService
@@ -33,12 +35,12 @@ export class CreateUserComponent implements OnInit {
         });
       },
       error: (error) => {
-        let message = '';
-        message += error.error.message ? error.error.message : '';
+        let detail = '';
+        detail += error.error.message ? error.error.message : '';
         this._messageService.add({
           severity: 'error',
           summary: 'Erro ao criar usuário',
-          detail: message,
+          detail,
         });
       },
       complete: () => {

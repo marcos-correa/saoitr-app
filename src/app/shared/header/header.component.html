@@ -1,10 +1,52 @@
-<div class="header w-100 d-flex align-items-center justify-content-between">
-  <div class="header-title ms-5 p-2">
-    {{title}}</div>
-  <div class="d-flex  me-5">
-    <button class="b-sec"(click)="toggleSetApi()">
-      <i class="fas fa-gear"></i>
-    </button>
-    <set-api *ngIf="showSetApi" (settedAPI)="settedApi()"></set-api>
-  </div>
+<div class="d-flex flex-column">
+  <button
+    pButton
+    pRipple
+    pTooltip="Página Inicial"
+    tooltipPosition="left"
+    icon="pi pi-home"
+    class="p-button-primary p-button-rounded p-button-outlined"
+    [routerLink]="['/']"
+  ></button>
+
+  <button
+    pButton
+    pRipple
+    [pTooltip]="isLogged ? 'Perfil' : 'Login'"
+    tooltipPosition="left"
+    icon="pi pi-user"
+    class="p-button-primary p-button-rounded p-button-outlined mt-2"
+    [routerLink]="isLogged ? ['/profile'] : ['/login']"
+  ></button>
+
+  <button
+    *ngIf="isLogged"
+    pButton
+    pRipple
+    pTooltip="Sair"
+    tooltipPosition="left"
+    icon="pi pi-sign-out"
+    class="p-button-primary p-button-rounded p-button-outlined mt-2"
+    (click)="logout()"
+  ></button>
+
+  <button
+    pButton
+    pRipple
+    pTooltip="Configurações"
+    tooltipPosition="left"
+    icon="pi pi-cog"
+    class="p-button-primary p-button-rounded p-button-outlined mt-2"
+    (click)="toggleSetApi()"
+  ></button>
 </div>
+
+<p-dialog
+  [(visible)]="showSetApi"
+  [style]="{ width: '450px' }"
+  header="Configurar Servidor"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <set-api *ngIf="showSetApi" (settedAPI)="settedApi()"></set-api>
+</p-dialog>

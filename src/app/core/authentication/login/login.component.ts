@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
+  showPassword: boolean = false;
+
   constructor(
     private _userService: UserService,
     private _router: Router,

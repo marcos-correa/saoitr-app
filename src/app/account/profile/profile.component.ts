@@ -10,6 +10,8 @@ export class ProfileComponent implements OnInit {
   isLogged = false;
   user: any = {};
 
+  showUserForm = false;
+
   constructor(private _userService: UserService) {}
 
   ngOnInit(): void {
@@ -23,6 +25,34 @@ export class ProfileComponent implements OnInit {
   getUser() {
     this._userService.user$.subscribe((user) => {
       this.user = user;
+    });
+  }
+
+  edituser() {
+    this.showUserForm = !this.showUserForm;
+  }
+
+  saveUser() {
+    let { email, name, password, id } = this.user;
+    if (!password) {
+      password = null;
+    }
+
+    let user = {
+      email,
+      name,
+      password,
+    };
+    this._userService.updateUser(user, id).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      // complete: () => {
+      //   this.getUser();
+      // }
     });
   }
 }

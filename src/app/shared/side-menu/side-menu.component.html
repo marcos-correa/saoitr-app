@@ -1,15 +1,17 @@
 <p-toast></p-toast>
 <div class="side-menu d-flex flex-column h-100">
-  <div class="menu-items h-100">
+  <div class="menu-items h-100 pt-5">
+    <!-- <h3>SAOITR</h3> -->
     <div class="menu-item" *ngFor="let item of menuItems">
       <div class="d-flex align-items-center p-2">
-
-        <button (click)="router(item.path)" class="btn btn-primary btn-dark d-flex align-items-center">
-          <i class="fas {{item.icon}}"></i>
-          <span class="ms-2 me-2" style="color:white; white-space: nowrap;">
-            {{item.name}}
-          </span>
-        </button>
+        <button
+          pButton
+          pRipple
+          (click)="router(item.path)"
+          class="p-button-primary p-button-outlined"
+          [label]="item.name"
+          icon="pi pi-{{ item.icon }}"
+        ></button>
       </div>
     </div>
   </div>

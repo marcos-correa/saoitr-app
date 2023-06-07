@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'header',
@@ -7,14 +8,19 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   showSetApi: boolean = false;
+  isLogged = false;
 
   @Output() reset = new EventEmitter<any>();
 
-  constructor() {}
+  constructor(private _userService: UserService) {}
 
   title: string =
     'Sistema de aviso de ocorrências de interrupção de tráfego em rodovias';
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._userService.isUserLogged$.subscribe((isLogged) => {
+      this.isLogged = isLogged;
+    });
+  }
 
   toggleSetApi() {
     this.showSetApi = !this.showSetApi;
@@ -27,5 +33,9 @@ export class HeaderComponent implements OnInit {
 
   resetApp() {
     this.reset.emit();
+  }
+
+  logout() {
+    this._userService.logout();
   }
 }

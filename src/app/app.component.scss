@@ -1,6 +1,24 @@
 @import '../assets/scss/variables';
 
+
 .app-content{
   height: 100vh;
   
+}
+
+$scrollbar-width: 12px;
+
+.dark-bg{
+  background-color: $dark-background;
+}
+
+.wrapper-router{
+  height: 100vh;
+  overflow: auto;
+}
+
+.header-config {
+  position: absolute;
+  right: 20px + $scrollbar-width;
+  top: 20px; 
 }

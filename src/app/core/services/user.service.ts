@@ -56,11 +56,13 @@ export class UserService {
     const { id } = this.getUserFromStorage();
     this.httpClient.post(`${BASE_URL()}/logout`, { id }).subscribe({
       next: () => {
-        this._resetUser();
         this._messageService.add(USER_MESSAGES.LOGOUT_SUCCESS);
       },
-      error: (err) => {
-        console.log(err);
+      error: () => {
+        this._messageService.add(USER_MESSAGES.LOGOUT_ERROR);
+      },
+      complete: () => {
+        this._resetUser();
       },
     });
   }
@@ -92,5 +94,9 @@ export class UserService {
       ...user,
       password,
     };
+  }
+
+  updateUser(user: any, userId: number): Observable<any> {
+    return this.httpClient.put(`${BASE_URL()}/users/${userId}`, user);
   }
 }

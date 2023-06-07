@@ -1,11 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   OccurrenceData,
   Occurrence,
+  TYPES,
 } from 'src/app/core/interfaces/occurrences';
 import { OccurrencesService } from 'src/app/core/services/occurrences.service';
+import { EventEmitter } from 'stream';
+import { MenuItem } from 'primeng/api';
+import {
+  dateToIsoString,
+  isoDateToCalendar,
+} from 'src/app/utils/occurrence.utils';
 
 export interface Product {
   id?: string;
@@ -20,92 +27,6 @@ export interface Product {
   rating?: number;
 }
 
-export class ProductService {
-  status: string[] = ['OUTOFSTOCK', 'INSTOCK', 'LOWSTOCK'];
-
-  productNames: string[] = [
-    'Bamboo Watch',
-    'Black Watch',
-    'Blue Band',
-    'Blue T-Shirt',
-    'Bracelet',
-    'Brown Purse',
-    'Chakra Bracelet',
-    'Galaxy Earrings',
-    'Game Controller',
-    'Gaming Set',
-    'Gold Phone Case',
-    'Green Earbuds',
-    'Green T-Shirt',
-    'Grey T-Shirt',
-    'Headphones',
-    'Light Green T-Shirt',
-    'Lime Band',
-    'Mini Speakers',
-    'Painted Phone Case',
-    'Pink Band',
-    'Pink Purse',
-    'Purple Band',
-    'Purple Gemstone Necklace',
-    'Purple T-Shirt',
-    'Shoes',
-    'Sneakers',
-    'Teal T-Shirt',
-    'Yellow Earbuds',
-    'Yoga Mat',
-    'Yoga Set',
-  ];
-
-  generatePrduct(): Product {
-    const product: Product = {
-      id: this.generateId(),
-      name: this.generateName(),
-      description: 'Product Description',
-      price: this.generatePrice(),
-      quantity: this.generateQuantity(),
-      category: 'Product Category',
-      inventoryStatus: this.generateStatus(),
-      rating: this.generateRating(),
-    };
-
-    product.image =
-      product.name?.toLocaleLowerCase().split(/[ ,]+/).join('-') + '.jpg';
-    return product;
-  }
-
-  generateId() {
-    let text = '';
-    let possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (var i = 0; i < 5; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-  }
-
-  generateName() {
-    return this.productNames[Math.floor(Math.random() * Math.floor(30))];
-  }
-
-  generatePrice() {
-    return Math.floor(Math.random() * Math.floor(299) + 1);
-  }
-
-  generateQuantity() {
-    return Math.floor(Math.random() * Math.floor(75) + 1);
-  }
-
-  generateStatus() {
-    return this.status[Math.floor(Math.random() * Math.floor(3))];
-  }
-
-  generateRating() {
-    return Math.floor(Math.random() * Math.floor(5) + 1);
-  }
-}
-
 @Component({
   selector: 'occurences',
   templateUrl: './occurences.component.html',
@@ -114,77 +35,101 @@ export class ProductService {
 export class OccurencesComponent implements OnInit {
   @Input() isLogged: boolean = false;
 
-  productDialog?: boolean;
+  occurrenceDialog?: boolean;
   @Input() occurrences: OccurrenceData[] = [];
+
+  loading: boolean = false;
 
   occurrence: Partial<Occurrence> = {};
   selectedProducts?: Occurrence[] | null;
   submitted?: boolean = false;
-
-  productService?: ProductService;
+  @Input() userId?: number;
   term: string = '';
 
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private _occurrencesService: OccurrencesService
-  ) {
-    this.productService = new ProductService();
-  }
+  ) {}
+
+  items: MenuItem[] = [
+    { label: 'Ocorrências', icon: 'pi pi-fw pi-home', id: 'all' },
+    { label: 'Minhas ocorrências', icon: 'pi pi-fw pi-user', id: 'mine' },
+  ];
+  activeItem: MenuItem = this.items[0];
 
   ngOnInit(): void {
+    this.setMenuItems(this.isLogged);
     this.getAllOccurrences();
   }
 
-  getAllOccurrences() {
-    this._occurrencesService.getAllOccurrences().subscribe((data) => {
-      this.occurrences = data;
-    });
+  setMenuItems(isLogged: boolean) {
+    if (isLogged) {
+      this.items = [
+        { label: 'Ocorrências', icon: 'pi pi-fw pi-home', id: 'all' },
+        { label: 'Minhas ocorrências', icon: 'pi pi-fw pi-user', id: 'mine' },
+      ];
+      this.activeItem = this.items[0];
+    } else {
+      this.items = [{ label: 'Ocorrências', icon: 'pi pi-fw pi-home' }];
+      this.activeItem = this.items[0];
+    }
+  }
+
+  typeOfOccurrence(occurenceType: number) {
+    return TYPES[occurenceType];
+  }
+
+  getAllOccurrences(item?: MenuItem) {
+    if (this.loading) return;
+    if (item) this.activeItem = item;
+    if (this.activeItem.id === 'all') {
+      this.loading = true;
+      this._occurrencesService.getAllOccurrences().subscribe((occurrences) => {
+        occurrences.forEach((occurrence) => {
+          occurrence._occurrence_type = TYPES[occurrence.occurrence_type];
+        });
+        this.occurrences = occurrences;
+        this.loading = false;
+      });
+    }
+    if (this.activeItem.id === 'mine' && this.userId) {
+      this.loading = true;
+      this._occurrencesService
+        .getAllOccurrencesByUser(this.userId)
+        .subscribe((occurrences) => {
+          occurrences.forEach((occurrence) => {
+            occurrence._occurrence_type = TYPES[occurrence.occurrence_type];
+          });
+          this.occurrences = occurrences;
+          this.loading = false;
+        });
+    }
   }
 
   openNew() {
     this.occurrence = {};
     this.submitted = false;
-    this.productDialog = true;
+    this.occurrenceDialog = true;
   }
 
-  deleteSelectedProducts() {
+  editOccurrence(occurence: Occurrence) {
+    this.occurrence = this.formatOccurrenceToEdit(occurence);
+    this.occurrenceDialog = true;
+  }
+
+  deleteOccurrence(occurrence: Occurrence) {
+    const message = `Tem certeza que deseja deletar a ocorrência ${occurrence.local} do km ${occurrence.km}?`;
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message,
+      header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // this.products = this.products?.filter(
-        //   (val) => !this.selectedProducts?.includes(val)
-        // );
-        this.selectedProducts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000,
-        });
-      },
-    });
-  }
-
-  editProduct(occurence: Occurrence) {
-    this.occurrence = { ...occurence };
-    this.productDialog = true;
-  }
-
-  deleteProduct(product: Product) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        // this.products = this.products?.filter((val) => val.id !== product.id);
         this.occurrence = {};
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
+          summary: 'Deu boa!',
+          detail: 'Ocorrência deletada.',
           life: 3000,
         });
       },
@@ -192,54 +137,59 @@ export class OccurencesComponent implements OnInit {
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.occurrenceDialog = false;
     this.submitted = false;
+    this.resetOccurrence();
   }
 
-  saveProduct() {
-    this.submitted = true;
-
-    // if (
-    //   this.occurrence &&
-    //   this.occurrence.local &&
-    //   this.occurrence.local.trim() &&
-    //   this.occurrences
-    // ) {
-    //   if (this.occurrence.id) {
-    //     let index = this.findIndexById(String(this.occurrence.id));
-    //     this.occurrences[index] = this.occurrence;
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'Successful',
-    //       detail: 'Product Updated',
-    //       life: 3000,
-    //     });
-    //   } else {
-    //     this.occurrence.id = this.createId();
-    //     this.product.image = 'product-placeholder.svg';
-    //     // this.products?.push(this.product);
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'Successful',
-    //       detail: 'Product Created',
-    //       life: 3000,
-    //     });
-    //   }
-
-    this.productDialog = false;
+  resetOccurrence() {
     this.occurrence = {};
   }
 
-  // findIndexById(id: string): number {
-  //   let index = -1;
-  //   if (this.occurrences)
-  //     for (let i = 0; i < this.occurrences.length; i++) {
-  //       if (this.occurrences[i].id === id) {
-  //         index = i;
-  //         break;
-  //       }
-  //     }
+  saveOccurrence() {
+    this.submitted = true;
+    const occurrence = this.formatOccurrenceToSave();
+    this._occurrencesService.createOccurrence(occurrence).subscribe({
+      next: (occurrence: OccurrenceData) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Feito!',
+          detail: `A ocorrencia ${occurrence.local} foi criada com sucesso!`,
+          life: 3000,
+        });
+        this.getAllOccurrences();
+      },
+      error: (error: any) => {
+        let detail = '';
+        detail += error.error.message ? error.error.message : '';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Ops!',
+          detail,
+          life: 3000,
+        });
+      },
+    });
 
-  //   return index;
-  // }
+    this.occurrenceDialog = false;
+    this.resetOccurrence();
+  }
+
+  formatOccurrenceToSave() {
+    const user_id = this.userId;
+    const registered_at = dateToIsoString(this.occurrence.registered_at);
+    return {
+      ...this.occurrence,
+      registered_at,
+      user_id,
+    };
+  }
+
+  formatOccurrenceToEdit(occurence: Occurrence) {
+    const registered_at = isoDateToCalendar(occurence.registered_at);
+    return {
+      ...occurence,
+      registered_at,
+    };
+  }
 }

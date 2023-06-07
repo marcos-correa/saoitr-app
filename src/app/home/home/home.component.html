@@ -1,14 +1,5 @@
-<!-- <p-toast></p-toast> -->
-
-<div class="container mt-5">
-  <occurences
-    [isLogged]="isLogged"
-    style="
-      overflow: scroll;
-      height: 100vh;
-      display: block;
-      background-color: #121212;
-    "
-  >
+<div class="container dark-bg pt-5">
+  <occurences [isLogged]="isLogged" [userId]="userId" class="occurrences">
+    <occurrences-map></occurrences-map>
   </occurences>
 </div>

@@ -28,7 +28,16 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CreateOccurrenceComponent } from './create-occurrence/create-occurrence.component';
+import { OccurrenceFormComponent } from './occurrence-form/occurrence-form.component';
+import { OccurrencesMapComponent } from './occurrences-map/occurrences-map.component';
+import { GMapModule } from 'primeng/gmap';
+import { RippleModule } from 'primeng/ripple';
+import { PasswordModule } from 'primeng/password';
+import { UserFormComponent } from './user-form/user-form.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { MenuItem } from 'primeng/api';
+
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -37,7 +46,9 @@ import { CreateOccurrenceComponent } from './create-occurrence/create-occurrence
     SideMenuComponent,
     DialogComponent,
     OccurencesComponent,
-    CreateOccurrenceComponent,
+    OccurrenceFormComponent,
+    OccurrencesMapComponent,
+    UserFormComponent,
   ],
   imports: [
     CommonModule,
@@ -49,8 +60,13 @@ import { CreateOccurrenceComponent } from './create-occurrence/create-occurrence
     // PrimeNG
     ToastModule,
     ToolbarModule,
+    GMapModule,
+    RippleModule,
+    PasswordModule,
 
     TableModule,
+    TabMenuModule,
+    TabViewModule,
     CalendarModule,
     SliderModule,
     MultiSelectModule,
@@ -71,10 +87,13 @@ import { CreateOccurrenceComponent } from './create-occurrence/create-occurrence
     HeaderComponent,
     SideMenuComponent,
     OccurencesComponent,
+    OccurrencesMapComponent,
+    UserFormComponent,
 
     // PrimeNG
     ToastModule,
     ToolbarModule,
+    GMapModule,
 
     TableModule,
     CalendarModule,

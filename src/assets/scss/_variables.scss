@@ -1,2 +1,51 @@
 // import bootstrap styles
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
+
+$dark-primary: #222222;
+$dark-secondary: #333333;
+$dark-accent: #FFA500;
+$dark-background: #121212;
+$dark-text: #f5f5f5;
+
+$--surface-a:#1e1e1e;
+$--surface-b:#121212;
+$--surface-c:hsla(0,0%,100%,.04);
+$--surface-d:hsla(0,0%,100%,.12);
+$--surface-e:#1e1e1e;
+$--surface-f:#262626;
+
+// @import '~primeng/resources/themes/md-dark-indigo/theme.css';
+
+
+
+/* Style the native scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: var(--surface-b);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface-c);
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-d);
+}
+
+/* Button */
+::-webkit-scrollbar-button {
+  height: 0;
+  background-color: var(--surface-e);
+}
+
+/* Button on hover */
+::-webkit-scrollbar-button:hover {
+  background-color: var(--surface-f);
+}

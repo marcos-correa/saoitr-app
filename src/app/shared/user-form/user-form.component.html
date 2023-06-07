@@ -1,0 +1,59 @@
+<div class="field p-fluid mt-3">
+  <span class="p-float-label">
+    <input
+      type="text"
+      pInputText
+      id="name"
+      [(ngModel)]="user.name"
+      required
+      autofocus
+      (ngModelChange)="onUserChange()"
+    />
+    <label for="name">Nome</label>
+  </span>
+</div>
+<div class="field p-fluid mt-3">
+  <span class="p-float-label">
+    <input
+      id="email"
+      pInputText
+      [(ngModel)]="user.email"
+      [required]="true"
+      (ngModelChange)="onUserChange()"
+    />
+    <label for="email">Email</label>
+  </span>
+</div>
+<div class="field p-fluid mt-3">
+  <span class="p-float-label">
+    <input
+      type="password"
+      pInputText
+      id="password"
+      [(ngModel)]="user.password"
+      required
+      autofocus
+      (ngModelChange)="onUserChange()"
+    />
+    <label for="password">Senha</label>
+  </span>
+</div>
+
+<div class="d-flex p-fluid mt-3">
+  <button
+    pButton
+    pRipple
+    label="Cancelar"
+    icon="pi pi-times"
+    class="p-button-text"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Salvar"
+    icon="pi pi-check"
+    class="p-button-text"
+    (click)="saveUser()"
+  ></button>
+</div>

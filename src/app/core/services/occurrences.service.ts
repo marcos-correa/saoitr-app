@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { BASE_URL } from './constants';
-import { Observable } from 'rxjs';
-import { OccurrenceData } from '../interfaces/occurrences';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { OccurrenceCreate, OccurrenceData } from '../interfaces/occurrences';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,31 @@ export class OccurrencesService {
     private _messageService: MessageService
   ) {}
 
+  occurencesSub = new BehaviorSubject<OccurrenceData[]>([]);
+  occurences$ = this.occurencesSub.asObservable();
+
   getAllOccurrences(): Observable<OccurrenceData[]> {
-    return this._httpClient.get<OccurrenceData[]>(`${BASE_URL()}/occurrences`);
+    return this._httpClient
+      .get<OccurrenceData[]>(`${BASE_URL()}/occurrences`)
+      .pipe(
+        tap((occurences: OccurrenceData[]) => {
+          this.occurencesSub.next(occurences);
+        })
+      );
+  }
+
+  getAllOccurrencesByUser(userId: number): Observable<OccurrenceData[]> {
+    return this._httpClient.get<OccurrenceData[]>(
+      `${BASE_URL()}/occurrences/users/${userId}`
+    );
+  }
+
+  createOccurrence(
+    occurrence: Partial<OccurrenceCreate>
+  ): Observable<OccurrenceData> {
+    return this._httpClient.post<OccurrenceData>(
+      `${BASE_URL()}/occurrences`,
+      occurrence
+    );
   }
 }

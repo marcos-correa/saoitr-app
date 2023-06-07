@@ -1,11 +1,17 @@
 @import '../../../assets/scss/variables';
 
+$--surface-a:#1e1e1e;
+$--surface-b:#121212;
+$--surface-c:hsla(0,0%,100%,.04);
+$--surface-d:hsla(0,0%,100%,.12);
+$--surface-e:#1e1e1e;
+$--surface-f:#262626;
 .menu-items{
-  background-color: #0A0A0A;
-}
-
-.side-menu{
-  background-color: $primary;
+  background-color: #1e1e1e;//#0A0A0A;
+  &-text{
+    color: $dark-text;
+    white-space: nowrap;
+  }
 }
 
 .btn-dark{

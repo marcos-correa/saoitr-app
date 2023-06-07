@@ -12,18 +12,25 @@ export class HomeComponent implements OnInit {
   isLogged: boolean = false;
   showOccurences: boolean = true;
   showUsers: boolean = false;
+  userId?: number;
 
   constructor(private _userService: UserService) {}
 
   ngOnInit(): void {
     this.getUsers();
+    this.getUserId();
     this._userService.isUserLogged$.subscribe((isLogged) => {
       if (isLogged) {
         this.isLogged = true;
       } else {
         this.isLogged = false;
       }
+      this.getUserId();
     });
+  }
+  getUserId() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userId = user.id || null;
   }
 
   getUsers() {

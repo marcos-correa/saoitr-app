@@ -1,10 +1,15 @@
-
-<!-- <p-toast></p-toast> -->
-<div class="d-flex app-content" >
-  <side-menu style="width: 250px"></side-menu>
-  <div class="d-flex flex-column" style="width: -webkit-fill-available; overflow: hidden">
-
-    <header (reset)="reset()" class=""></header>
-    <router-outlet *ngIf="!isLoading" class="container-fluid"></router-outlet>
+<p-toast></p-toast>
+<div class="d-flex app-content">
+  <side-menu hidden style="width: 250px"></side-menu>
+  <div
+    class="d-flex flex-column dark-bg"
+    style="width: -webkit-fill-available; overflow: hidden"
+  >
+    <div class="wrapper-router">
+      <div class="header-config">
+        <header (reset)="reset()" class=""></header>
+      </div>
+      <router-outlet *ngIf="!isLoading"></router-outlet>
+    </div>
   </div>
 </div>

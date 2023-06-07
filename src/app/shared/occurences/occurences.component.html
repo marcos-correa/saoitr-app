@@ -1,59 +1,120 @@
-<!-- <p-toast></p-toast> -->
+<div class="mb-5">
+  <p-toolbar class="">
+    <p-tabMenu [model]="items" [activeItem]="items[0]">
+      <ng-template pTemplate="item" let-item let-i="index">
+        <button
+          [disabled]="loading"
+          pButton
+          class="d-flex align-items-center p-button-text p-4"
+          (click)="getAllOccurrences(item)"
+        >
+          <i [ngClass]="item.icon" class="me-3"></i>
+          <span>
+            {{ item.label }}
+          </span>
+        </button>
+      </ng-template>
+    </p-tabMenu>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="term"
+        (input)="dt.filterGlobal(term, 'contains')"
+        placeholder="Search..."
+      />
+    </span>
+    <div class="p-toolbar-group-right">
+      <button
+        *ngIf="isLogged"
+        pButton
+        pRipple
+        label="Nova Ocorrencia"
+        icon="pi pi-plus"
+        class="p-button-primary mr-2"
+        (click)="openNew()"
+      ></button>
+    </div>
+  </p-toolbar>
+  <p-table
+    #dt
+    [value]="occurrences"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="['local', 'occurrence_type', 'km', 'user_id']"
+    responsiveLayout="scroll"
+    [(selection)]="selectedProducts"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ocorrências registradas"
+    [showCurrentPageReport]="true"
+  >
+    <!-- Maps form here -->
+    <ng-template pTemplate="caption">
+      <ng-content></ng-content>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="localColumn" scope="col" pSortableColumn="local">
+          Ocorrência <p-sortIcon field="local"></p-sortIcon>
+        </th>
+        <th pSortableColumn="km">Km <p-sortIcon field="km"></p-sortIcon></th>
+        <th id="categoryColumn" pSortableColumn="occurrence_type">
+          Categoria <p-sortIcon field="occurrence_type"></p-sortIcon>
+        </th>
+        <th id="occurenceDate" pSortableColumn="registered_at">
+          Data <p-sortIcon field="registered_at"></p-sortIcon>
+        </th>
+        <th style="width: 1px; white-space: nowrap"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-occurrence>
+      <tr>
+        <td>{{ occurrence.local }}</td>
+        <td>{{ occurrence.km }}</td>
+        <td>
+          {{ occurrence.occurrence_type }} - {{ occurrence._occurrence_type }}
+        </td>
+        <td>{{ occurrence.registered_at | date }}</td>
 
-<div class="card">
-    <p-table #dt [value]="occurrences" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll"
-        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ocorrências registradas" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="d-flex align-items-center justify-content-between">
-                <h5 class="m-0">Ocorrencias</h5>
-                
-                <span class="p-input-icon-left">
-                  
-                  <i class="pi pi-search"></i>
-                  <input pInputText type="text" [(ngModel)]="term" (input)="dt.filterGlobal(term, 'contains')" placeholder="Search..." />
-                </span>
-                <button *ngIf="isLogged" pButton pRipple label="Nova Ocorrencia" icon="pi pi-plus" class="p-button-success btn-success mr-2" (click)="openNew()"></button>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th id="localColumn" scope="col" pSortableColumn="local">Ocorrencia <p-sortIcon field="local"></p-sortIcon></th>
-                <!-- <th>Image</th> -->
-                <th pSortableColumn="km">Km <p-sortIcon field="km"></p-sortIcon></th>
-                <th id="categoryColumn" pSortableColumn="occurrence_type">Categoria <p-sortIcon field="occurrence_type"></p-sortIcon></th>
-                <!-- <th id="ratingColumn" pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th> -->
-                <!-- <th id="inventoryStatusColumn" pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
-                <th id="occurenceDate" pSortableColumn="registered_at">Data <p-sortIcon field="registered_at"></p-sortIcon></th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-occurence>
-            <tr>
-                <td>{{occurence.local}}</td>
-                <!-- <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td> -->
-                <td>{{occurence.km}}</td>
-                <td>{{occurence.occurrence_type}}</td>
-                <td>{{occurence.registered_at | date}}</td>
-                <!-- <td><p-rating [ngModel]="occurence.rating" [readonly]="true" [cancel]="false"></p-rating></td> -->
-                <!-- <td><span [class]="'product-badge status-' + (occurence.inventoryStatus ? occurence.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td> -->
-                <!-- TODO: logic to match user with occurence -->
-                <td *ngIf="isLogged">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(occurence)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(occurence)"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                 {{occurrences ? occurrences.length : 0 }} Ocorrencias.
-            </div>
-        </ng-template>
-    </p-table>
+        <td style="width: 1px; white-space: nowrap">
+          <button
+            *ngIf="isLogged && occurrence.user_id === userId"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text me-2"
+            (click)="editOccurrence(occurrence)"
+          ></button>
+
+          <button
+            *ngIf="isLogged && occurrence.user_id === userId"
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-text"
+            (click)="deleteOccurrence(occurrence)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
-<p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Ocorrencia" [modal]="true" styleClass="p-fluid">
-   <create-occurrence [(occurrence)]="occurrence" (hide)="hideDialog()" (save)="saveProduct()"></create-occurrence>
+<p-dialog
+  [(visible)]="occurrenceDialog"
+  [style]="{ width: '450px' }"
+  header="Ocorrencia"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <occurrence-form
+    [userId]="userId"
+    [(occurrence)]="occurrence"
+    (hide)="hideDialog()"
+    (save)="saveOccurrence()"
+  ></occurrence-form>
 </p-dialog>
 
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

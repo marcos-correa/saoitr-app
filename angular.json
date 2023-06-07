@@ -34,11 +34,11 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeng/resources/themes/lara-light-indigo/theme.css",
+              "node_modules/primeng/resources/themes/md-dark-indigo/theme.css",
               "node_modules/primeicons/primeicons.css",
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -110,11 +110,10 @@
             ],
             "styles": [
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeng/resources/themes/lara-light-indigo/theme.css",
               "node_modules/primeicons/primeicons.css",
               "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.css"
-
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/primeng/resources/themes/md-dark-indigo/theme.css"
             ],
             "scripts": []
           }

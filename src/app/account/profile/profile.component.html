@@ -1,28 +1,39 @@
-<div>
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1>Entrega 1</h1>
-      </div>
-    </div>
-    <div *ngIf="!isLogged">
-      Usuário não está logado!
-    </div>
-    <div *ngIf="user && user.name && user.email" class="row">
+<p-dialog
+  [(visible)]="showUserForm"
+  header="Editar Usuário"
+  [style]="{ width: '450px' }"
+>
+  <user-form
+    [(user)]="user"
+    (save)="saveUser()"
+    (hide)="showUserForm = false"
+  ></user-form>
+</p-dialog>
 
-      <div class="col-12">
-        <h4>O usuário está logado =)</h4>
-        <div class="profile">
-          <div class="profile__name">
-            <span class="profile__name__label">Usuário:</span>
-            <span class="profile__name__value"> {{user.name}}</span>
-          </div>
-          <div class="profile__email">
-            <span class="profile__email__label">Email:</span>
-            <span class="profile__email__value"> {{user.email}}</span>
-          </div>
-        </div>
+<div class="mt-5 p-fluid row justify-content-center">
+  <p-card class="col-4 pt-5">
+    <ng-template pTemplate="header">
+      <div class="d-flex align-items-center justify-content-between mx-3">
+        <h2>Perfil</h2>
+        <button
+          *ngIf="isLogged"
+          pButton
+          pRipple
+          pTooltip="Editar Usuário"
+          tooltipPosition="bottom"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-text me-2 edit-class"
+          (click)="edituser()"
+        ></button>
       </div>
+    </ng-template>
+    <div class="d-flex">
+      <div class="title me-2">Nome:</div>
+      <div>{{ user.name }}</div>
     </div>
-  </div>
+    <div class="d-flex">
+      <div class="title me-2">Email:</div>
+      <div>{{ user.email }}</div>
+    </div>
+  </p-card>
 </div>

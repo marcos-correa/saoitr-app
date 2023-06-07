@@ -1,0 +1,9 @@
+@import '../../../assets/scss/variables';
+
+.dark-text{
+  color: $dark-text;
+}
+
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link{
+  padding: 0 !important;
+}
