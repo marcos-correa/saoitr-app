@@ -1,39 +1,38 @@
-<p-dialog
-  [(visible)]="showUserForm"
-  header="Editar Usuário"
-  [style]="{ width: '450px' }"
->
-  <user-form
-    [(user)]="user"
-    (save)="saveUser()"
-    (hide)="showUserForm = false"
-  ></user-form>
-</p-dialog>
-
 <div class="mt-5 p-fluid row justify-content-center">
   <p-card class="col-4 pt-5">
     <ng-template pTemplate="header">
       <div class="d-flex align-items-center justify-content-between mx-3">
-        <h2>Perfil</h2>
+        <h2>{{ !showUserForm ? "Usuário" : "Editar Usuário" }}</h2>
+        <button
+          *ngIf="isLogged && showUserForm"
+          pButton
+          pRipple
+          pTooltip="Remover Usuário"
+          tooltipPosition="bottom"
+          [icon]="'pi pi-trash'"
+          class="p-button-rounded p-button-danger p-button-text me-2 edit-class ms-auto"
+          (click)="deleteUser()"
+        ></button>
         <button
           *ngIf="isLogged"
           pButton
           pRipple
-          pTooltip="Editar Usuário"
+          [pTooltip]="showUserForm ? 'Fechar' : 'Editar Usuário'"
           tooltipPosition="bottom"
-          icon="pi pi-pencil"
+          [icon]="showUserForm ? 'pi pi-times' : 'pi pi-pencil'"
           class="p-button-rounded p-button-text me-2 edit-class"
           (click)="edituser()"
         ></button>
       </div>
     </ng-template>
-    <div class="d-flex">
-      <div class="title me-2">Nome:</div>
-      <div>{{ user.name }}</div>
-    </div>
-    <div class="d-flex">
-      <div class="title me-2">Email:</div>
-      <div>{{ user.email }}</div>
-    </div>
+    <user-form
+      *ngIf="isLogged"
+      [editFields]="showUserForm"
+      [(user)]="user"
+      (save)="saveUser()"
+      (hide)="showUserForm = false"
+    ></user-form>
   </p-card>
 </div>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

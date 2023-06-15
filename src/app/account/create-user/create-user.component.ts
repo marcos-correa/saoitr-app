@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { USER_MESSAGES } from 'src/app/core/constants/messages';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -20,7 +22,9 @@ export class CreateUserComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
-    private _messageService: MessageService
+    private _messageService: MessageService,
+    private _router: Router,
+    private _toastr: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -28,11 +32,14 @@ export class CreateUserComponent implements OnInit {
   onSubmit() {
     this._userService.createUser(this.userForm.value).subscribe({
       next: (user) => {
-        this._messageService.add(USER_MESSAGES.CREATE_USER_SUCCESS);
-        this._messageService.add({
+        this._toastr.add(USER_MESSAGES.CREATE_USER_SUCCESS);
+        this._toastr.add({
           severity: 'info',
           detail: `Usuário: ${user.name} | ${user.email}`,
+          life: 10000,
         });
+
+        this._router.navigate(['/login']).finally(() => {});
       },
       error: (error) => {
         let detail = '';

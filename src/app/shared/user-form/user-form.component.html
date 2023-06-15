@@ -3,6 +3,7 @@
     <input
       type="text"
       pInputText
+      [disabled]="!editFields"
       id="name"
       [(ngModel)]="user.name"
       required
@@ -15,6 +16,7 @@
 <div class="field p-fluid mt-3">
   <span class="p-float-label">
     <input
+      [disabled]="!editFields"
       id="email"
       pInputText
       [(ngModel)]="user.email"
@@ -24,7 +26,7 @@
     <label for="email">Email</label>
   </span>
 </div>
-<div class="field p-fluid mt-3">
+<div class="field p-fluid mt-3" *ngIf="editFields">
   <span class="p-float-label">
     <input
       type="password"
@@ -39,7 +41,7 @@
   </span>
 </div>
 
-<div class="d-flex p-fluid mt-3">
+<div class="d-flex p-fluid mt-3" *ngIf="editFields">
   <button
     pButton
     pRipple

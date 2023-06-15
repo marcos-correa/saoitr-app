@@ -31,9 +31,13 @@ export class OccurrencesService {
   }
 
   getAllOccurrencesByUser(userId: number): Observable<OccurrenceData[]> {
-    return this._httpClient.get<OccurrenceData[]>(
-      `${BASE_URL()}/occurrences/users/${userId}`
-    );
+    return this._httpClient
+      .get<OccurrenceData[]>(`${BASE_URL()}/occurrences/users/${userId}`)
+      .pipe(
+        tap((occurences: OccurrenceData[]) => {
+          this.occurencesSub.next(occurences);
+        })
+      );
   }
 
   createOccurrence(
@@ -42,6 +46,21 @@ export class OccurrencesService {
     return this._httpClient.post<OccurrenceData>(
       `${BASE_URL()}/occurrences`,
       occurrence
+    );
+  }
+
+  updateOccurrence(
+    occurrence: Partial<OccurrenceData>
+  ): Observable<OccurrenceData> {
+    return this._httpClient.put<OccurrenceData>(
+      `${BASE_URL()}/occurrences/${occurrence.id}`,
+      occurrence
+    );
+  }
+
+  deleteOccurrence(id: number): Observable<OccurrenceData> {
+    return this._httpClient.delete<OccurrenceData>(
+      `${BASE_URL()}/occurrences/${id}`
     );
   }
 }

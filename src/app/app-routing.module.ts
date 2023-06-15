@@ -15,9 +15,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
-      import('./core/authentication/authentication.module').then(
-        (m) => m.AuthenticationModule
-      ),
+      import('./account/account.module').then((m) => m.AccountModule),
   },
   {
     path: 'profile',

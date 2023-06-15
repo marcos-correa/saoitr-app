@@ -14,8 +14,9 @@ import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
 import { UserFormComponent } from '../shared/user-form/user-form.component';
 import { DialogModule } from 'primeng/dialog';
+import { LoginComponent } from './login/login.component';
 @NgModule({
-  declarations: [CreateUserComponent, ProfileComponent],
+  declarations: [CreateUserComponent, ProfileComponent, LoginComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,

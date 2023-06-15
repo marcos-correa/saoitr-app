@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OccurrenceData } from 'src/app/core/interfaces/occurrences';
 import { User } from 'src/app/core/interfaces/user';
 import { UserService } from 'src/app/core/services/user.service';
 
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit {
   showOccurences: boolean = true;
   showUsers: boolean = false;
   userId?: number;
+  selectedOccurrence?: OccurrenceData;
 
   constructor(private _userService: UserService) {}
 
@@ -47,5 +49,9 @@ export class HomeComponent implements OnInit {
     this._userService.getAllUsers().subscribe((users) => {
       this.allUsers = users;
     });
+  }
+
+  setSelectOccurrence(occurrence: OccurrenceData) {
+    this.selectedOccurrence = occurrence;
   }
 }

@@ -16,3 +16,14 @@ export function dateToIsoString(dateString?: string) {
   const isoDate = date.toISOString();
   return isoDate;
 }
+
+export const allOccurrencesMenu = {
+  label: 'Ocorrências',
+  icon: 'pi pi-fw pi-map',
+  id: 'all',
+};
+export const mineOccurences = {
+  label: 'Minhas ocorrências',
+  icon: 'pi pi-fw pi-map-marker',
+  id: 'mine',
+};

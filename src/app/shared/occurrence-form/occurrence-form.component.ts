@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   Occurrence,
+  OccurrenceData,
   TYPES_BY_OCCURENCE,
 } from 'src/app/core/interfaces/occurrences';
 
@@ -10,7 +11,7 @@ import {
   styleUrls: ['./occurrence-form.component.scss'],
 })
 export class OccurrenceFormComponent implements OnInit {
-  @Input() occurrence: Partial<Occurrence> = {};
+  @Input() occurrence: Partial<OccurrenceData> = {};
   @Output() occurrenceChange = new EventEmitter<Partial<Occurrence>>();
 
   occurenceDate?: string;
@@ -29,23 +30,11 @@ export class OccurrenceFormComponent implements OnInit {
   constructor() {}
 
   onOccurrenceChange() {
-    this.occurrence.registered_at = this.occurenceDate;
-    this.occurrenceChange.emit(this.occurrence);
-  }
-
-  onDateChange() {
+    delete this.occurrence._occurrence_type;
     this.occurrenceChange.emit(this.occurrence);
   }
 
   ngOnInit(): void {
-    // console.log('occurrence', this.occurrence);
-    // if (this.occurrence.registered_at) {
-
-    // this.occurenceDate = formattedDate;
-    // console.log('formattedDate', formattedDate);
-    // } else {
-    // this.occurenceDate = '';
-    // }
     this.getUserId();
   }
 

@@ -49,3 +49,12 @@ $--surface-f:#262626;
 ::-webkit-scrollbar-button:hover {
   background-color: var(--surface-f);
 }
+
+.gm-style-iw-d {
+  /* Button */
+  &::-webkit-scrollbar-button {
+    height: 0;
+    background-color: white;
+  }
+
+}

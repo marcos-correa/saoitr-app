@@ -1,5 +1,12 @@
 <div class="container dark-bg pt-5">
-  <occurences [isLogged]="isLogged" [userId]="userId" class="occurrences">
-    <occurrences-map></occurrences-map>
+  <occurences
+    [isLogged]="isLogged"
+    [userId]="userId"
+    [selectedOccurrence]="selectedOccurrence"
+    class="occurrences"
+  >
+    <occurrences-map
+      (selectedOccurrence)="setSelectOccurrence($event)"
+    ></occurrences-map>
   </occurences>
 </div>

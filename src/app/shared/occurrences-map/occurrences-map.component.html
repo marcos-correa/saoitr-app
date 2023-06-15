@@ -1,5 +1,6 @@
 <p-toast></p-toast>
 <p-gmap
+  *ngIf="showMap"
   #gmap
   [style]="{
     width: '100%',
@@ -11,3 +12,9 @@
   (onMapClick)="handleMapClick($event)"
   (onOverlayClick)="handleOverlayClick($event)"
 ></p-gmap>
+
+<div *ngIf="!showMap" #offline>
+  <div class="c">
+    É necessário conexão com a internet para visualizar o mapa.
+  </div>
+</div>

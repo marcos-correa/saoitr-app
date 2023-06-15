@@ -15,14 +15,14 @@
         </button>
       </ng-template>
     </p-tabMenu>
-    <span class="p-input-icon-left">
+    <span class="p-input-icon-left" hidden>
       <i class="pi pi-search"></i>
       <input
         pInputText
         type="text"
         [(ngModel)]="term"
         (input)="dt.filterGlobal(term, 'contains')"
-        placeholder="Search..."
+        placeholder="Filtre as ocorrências"
       />
     </span>
     <div class="p-toolbar-group-right">
@@ -40,12 +40,13 @@
   <p-table
     #dt
     [value]="occurrences"
-    [rows]="10"
-    [paginator]="true"
+    [rows]="occurencesPerPage"
+    [paginator]="showPagination"
     [globalFilterFields]="['local', 'occurrence_type', 'km', 'user_id']"
     responsiveLayout="scroll"
     [(selection)]="selectedProducts"
     [rowHover]="true"
+    [showLoader]="loading"
     dataKey="id"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ocorrências registradas"
     [showCurrentPageReport]="true"
@@ -70,11 +71,17 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-occurrence>
-      <tr>
-        <td>{{ occurrence.local }}</td>
+      <tr
+        [ngClass]="{
+          'selected-item': occurrence.id === selectedOccurrence?.id
+        }"
+      >
+        <td>
+          {{ occurrence.local }}
+        </td>
         <td>{{ occurrence.km }}</td>
         <td>
-          {{ occurrence.occurrence_type }} - {{ occurrence._occurrence_type }}
+          {{ occurrence._occurrence_type }}
         </td>
         <td>{{ occurrence.registered_at | date }}</td>
 
@@ -114,6 +121,7 @@
     [(occurrence)]="occurrence"
     (hide)="hideDialog()"
     (save)="saveOccurrence()"
+    (update)="updateOccurrence()"
   ></occurrence-form>
 </p-dialog>
 

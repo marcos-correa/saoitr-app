@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<p-toast key="app-toast"></p-toast>
 <div class="d-flex app-content">
   <side-menu hidden style="width: 250px"></side-menu>
   <div
@@ -7,7 +7,7 @@
   >
     <div class="wrapper-router">
       <div class="header-config">
-        <header (reset)="reset()" class=""></header>
+        <header [url]="url" (reset)="reset()" class=""></header>
       </div>
       <router-outlet *ngIf="!isLoading"></router-outlet>
     </div>

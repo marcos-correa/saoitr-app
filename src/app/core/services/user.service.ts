@@ -34,6 +34,24 @@ export class UserService {
     return this.httpClient.get(`${BASE_URL()}/users`);
   }
 
+  getUserById(id: string) {
+    this.httpClient
+      .get(`${BASE_URL()}/users/${id}`)
+      .pipe(
+        tap((res: any) => {
+          this._updateUserStorage(res);
+        })
+      )
+      .subscribe({
+        next: (user) => {
+          this._messageService.add(USER_MESSAGES.USER_FOUND);
+        },
+        error: (error) => {
+          this._messageService.add(USER_MESSAGES.USER_NOT_FOUND);
+        },
+      });
+  }
+
   getUserFromStorage() {
     const user = localStorage.getItem('user');
     if (user) {
@@ -54,15 +72,17 @@ export class UserService {
 
   logout() {
     const { id } = this.getUserFromStorage();
+
     this.httpClient.post(`${BASE_URL()}/logout`, { id }).subscribe({
       next: () => {
         this._messageService.add(USER_MESSAGES.LOGOUT_SUCCESS);
       },
       error: () => {
         this._messageService.add(USER_MESSAGES.LOGOUT_ERROR);
+        this.resetUser();
       },
       complete: () => {
-        this._resetUser();
+        this.resetUser();
       },
     });
   }
@@ -74,7 +94,17 @@ export class UserService {
     this.isUserLoggedInSub.next(true);
   }
 
-  private _resetUser() {
+  private _updateUserStorage(user: any) {
+    const userStored = this.getUserFromStorage();
+    const userToStore = {
+      ...userStored,
+      ...user,
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+    this.userSub.next(userToStore);
+  }
+
+  resetUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.userSub.next(null);
@@ -97,6 +127,14 @@ export class UserService {
   }
 
   updateUser(user: any, userId: number): Observable<any> {
-    return this.httpClient.put(`${BASE_URL()}/users/${userId}`, user);
+    return this.httpClient.put(`${BASE_URL()}/users/${userId}`, user).pipe(
+      tap((res: any) => {
+        this._updateUserStorage(res);
+      })
+    );
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    return this.httpClient.delete(`${BASE_URL()}/users/${userId}`);
   }
 }

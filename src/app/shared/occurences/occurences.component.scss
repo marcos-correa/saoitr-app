@@ -7,3 +7,9 @@
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link{
   padding: 0 !important;
 }
+
+.selected-item{
+  border-radius: 2px !important;
+    box-sizing: border-box;
+    box-shadow: inset 0px -0.5px 0px 2px #9FA8DA;
+}

@@ -11,7 +11,9 @@ export type UserMessageAction =
   | 'CREATE_ERROR'
   | 'UPDATE_ERROR'
   | 'LOGOUT_ERROR'
-  | 'DELETE_ERROR';
+  | 'DELETE_ERROR'
+  | 'USER_FOUND'
+  | 'USER_NOT_FOUND';
 export type MessageSeverity = 'SUCCESS' | 'ERROR';
 
 export const SUCCESS_MESSAGES: Partial<Message> = {
@@ -49,6 +51,14 @@ export const USER_MESSAGES: Record<UserMessageAction, Message> = {
   CREATE_USER_SUCCESS: {
     ...SUCCESS_MESSAGES,
     detail: 'Usuário criado com sucesso!',
+  },
+  USER_FOUND: {
+    ...SUCCESS_MESSAGES,
+    detail: 'Usuário encontrado!',
+  },
+  USER_NOT_FOUND: {
+    ...ERROR_MESSAGES,
+    detail: 'Usuário não encontrado!',
   },
 
   // ERROR

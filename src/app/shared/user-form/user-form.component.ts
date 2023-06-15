@@ -14,6 +14,8 @@ export class UserFormComponent implements OnInit {
   @Output() save = new EventEmitter();
   @Output() update = new EventEmitter();
 
+  @Input() editFields?: boolean = false;
+
   @Input() userId?: number;
 
   constructor() {}

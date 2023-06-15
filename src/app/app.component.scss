@@ -19,6 +19,12 @@ $scrollbar-width: 12px;
 
 .header-config {
   position: absolute;
-  right: 20px + $scrollbar-width;
+  left: 20px + $scrollbar-width;
   top: 20px; 
+  z-index: 99;
+}
+
+.server-api{
+  color: $dark-text;
+  opacity: 0.5;
 }
