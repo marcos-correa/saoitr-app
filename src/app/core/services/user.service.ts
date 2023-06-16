@@ -127,7 +127,9 @@ export class UserService {
   }
 
   updateUser(user: any, userId: number): Observable<any> {
-    return this.httpClient.put(`${BASE_URL()}/users/${userId}`, user).pipe(
+    const userMd5 = this._encryptPassword(user);
+
+    return this.httpClient.put(`${BASE_URL()}/users/${userId}`, userMd5).pipe(
       tap((res: any) => {
         this._updateUserStorage(res);
       })
