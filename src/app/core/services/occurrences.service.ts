@@ -52,8 +52,10 @@ export class OccurrencesService {
   updateOccurrence(
     occurrence: Partial<OccurrenceData>
   ): Observable<OccurrenceData> {
+    const id = occurrence.id;
+    if (occurrence.id) delete occurrence.id;
     return this._httpClient.put<OccurrenceData>(
-      `${BASE_URL()}/occurrences/${occurrence.id}`,
+      `${BASE_URL()}/occurrences/${id}`,
       occurrence
     );
   }
